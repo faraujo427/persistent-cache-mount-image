@@ -1,4 +1,4 @@
-name: Build and publish persistent-cache-mount
+name: Build and publish
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ghcr.io/${{ github.actor }}/${{ github.repository }}:latest
+          images: ghcr.io/${{ github.repository }}
 
       - name: Build and push
         id: push
