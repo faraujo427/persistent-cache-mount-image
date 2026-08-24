@@ -18,3 +18,5 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/* \
   && npm ci --omit=dev
 COPY --from=builder /app/dist/index.js /
+COPY entrypoint.sh /
+ENTRYPOINT ["entrypoint.sh"]
