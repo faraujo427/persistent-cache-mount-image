@@ -4,6 +4,9 @@ on:
   push:
     branches: ['main']
 
+env:
+  IMAGE_NAME: ghcr.io/${{ github.actor }}/persistent-cache-mount
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -27,7 +30,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ghcr.io/${{ github.actor }}/persistent-cache-mount
+          images: ${{ env.IMAGE_NAME }}
 
       - name: Build and push
         id: push
@@ -37,10 +40,12 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
+          cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
 
       - name: Generate image attestation
         uses: actions/attest@v4
         with:
-          subject-name: ghcr.io/${{ github.actor }}/persistent-cache-mount
+          subject-name: ${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
