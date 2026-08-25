@@ -67,10 +67,10 @@ jobs:
       - name: Test image
         run: |
           docker build \
-          --build-arg GITHUB_SERVER_URL="$GITHUB_SERVER_URL" \
-          --build-arg ACTIONS_CACHE_URL="$ACTIONS_CACHE_URL" \
-          --build-arg ACTIONS_CACHE_SERVICE_V2="$ACTIONS_CACHE_SERVICE_V2" \
-          --build-arg ACTIONS_RESULTS_URL="$ACTIONS_RESULTS_URL" \
-          --build-arg ACTIONS_RUNTIME_TOKEN="$ACTIONS_RUNTIME_TOKEN" \
+          --secret id=GITHUB_SERVER_URL,env=GITHUB_SERVER_URL \
+          --secret id=ACTIONS_CACHE_URL,env=ACTIONS_CACHE_URL
+          --secret id=ACTIONS_CACHE_SERVICE_V2,env=ACTIONS_CACHE_SERVICE_V2
+          --secret id=ACTIONS_RESULTS_URL,env=ACTIONS_RESULTS_URL
+          --secret id=ACTIONS_RUNTIME_TOKEN,env=ACTIONS_RUNTIME_TOKEN
           __tests__/image \
           2>&1 | sed -nE '/#[[:digit:]]+ [[:digit:]]+\.[[:digit:]]+ /{s/#[[:digit:]]+ [[:digit:]]+\.[[:digit:]]+ //;p}'

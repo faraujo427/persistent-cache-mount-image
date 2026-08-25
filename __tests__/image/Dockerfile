@@ -1,20 +1,25 @@
 FROM ghcr.io/faraujo427/persistent-cache-mount:main
 
-ARG GITHUB_SERVER_URL
-ENV GITHUB_SERVER_URL=$GITHUB_SERVER_URL
-ARG ACTIONS_CACHE_URL
-ENV ACTIONS_CACHE_URL=$ACTIONS_CACHE_URL
-ARG ACTIONS_CACHE_SERVICE_V2
-ENV ACTIONS_CACHE_SERVICE_V2=$ACTIONS_CACHE_SERVICE_V2
-ARG ACTIONS_RESULTS_URL
-ENV ACTIONS_RESULTS_URL=$ACTIONS_RESULTS_URL
-ARG ACTIONS_RUNTIME_TOKEN
-ENV ACTIONS_RUNTIME_TOKEN=$ACTIONS_RUNTIME_TOKEN
+RUN --mount=type=secret,id=GITHUB_SERVER_URL,env=GITHUB_SERVER_URL \
+    --mount=type=secret,id=ACTIONS_CACHE_URL,env=ACTIONS_CACHE_URL \
+    --mount=type=secret,id=ACTIONS_CACHE_SERVICE_V2,env=ACTIONS_CACHE_SERVICE_V2 \
+    --mount=type=secret,id=ACTIONS_RESULTS_URL,env=ACTIONS_RESULTS_URL \
+    --mount=type=secret,id=ACTIONS_RUNTIME_TOKEN,env=ACTIONS_RUNTIME_TOKEN \
+    echo Test extraction \
+    && node /index.js extract --key test-key --paths /node_modules
 
-RUN printenv
+RUN --mount=type=secret,id=GITHUB_SERVER_URL,env=GITHUB_SERVER_URL \
+    --mount=type=secret,id=ACTIONS_CACHE_URL,env=ACTIONS_CACHE_URL \
+    --mount=type=secret,id=ACTIONS_CACHE_SERVICE_V2,env=ACTIONS_CACHE_SERVICE_V2 \
+    --mount=type=secret,id=ACTIONS_RESULTS_URL,env=ACTIONS_RESULTS_URL \
+    --mount=type=secret,id=ACTIONS_RUNTIME_TOKEN,env=ACTIONS_RUNTIME_TOKEN \
+    echo Test injection with key \
+    && node /index.js inject --key test-key --paths /node_modules --lookup-only
 
-RUN node /index.js extract --key test-key --paths /node_modules
-
-RUN node /index.js inject --key test-key --paths /node_modules --lookup-only
-
-RUN node /index.js inject --key test-wrong-key --paths /node_modules --prefix-keys test- --lookup-only
+RUN --mount=type=secret,id=GITHUB_SERVER_URL,env=GITHUB_SERVER_URL \
+    --mount=type=secret,id=ACTIONS_CACHE_URL,env=ACTIONS_CACHE_URL \
+    --mount=type=secret,id=ACTIONS_CACHE_SERVICE_V2,env=ACTIONS_CACHE_SERVICE_V2 \
+    --mount=type=secret,id=ACTIONS_RESULTS_URL,env=ACTIONS_RESULTS_URL \
+    --mount=type=secret,id=ACTIONS_RUNTIME_TOKEN,env=ACTIONS_RUNTIME_TOKEN \
+    echo Test injection with prefix key \
+    && node /index.js inject --key test-wrong-key --paths /node_modules --prefix-keys test- --lookup-only
