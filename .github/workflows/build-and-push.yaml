@@ -85,7 +85,7 @@ jobs:
         with:
           context: __tests__/image
           build-args: |
-            GITHUB_SERVER_URL=github.com
+            GITHUB_SERVER_URL=https://github.com
             ACTIONS_CACHE_URL=${{ steps.cache-url.outputs.result }}
             ACTIONS_CACHE_SERVICE_V2=${{ steps.cache-service-v2.outputs.result }}
             ACTIONS_RESULTS_URL=${{ steps.result-url.outputs.result }}
