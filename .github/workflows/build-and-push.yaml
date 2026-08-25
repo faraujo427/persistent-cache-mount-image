@@ -2,7 +2,7 @@ name: Build and publish
 
 on:
   push:
-    branches: ['main']
+    branches: ["main"]
 
 env:
   IMAGE_NAME: ghcr.io/${{ github.actor }}/persistent-cache-mount
@@ -55,21 +55,38 @@ jobs:
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
 
-      - name: Expose variables
+      - name: Expose cacheurl
+        id: cache-url
         uses: actions/github-script@v9
         with:
-          script: |
-            core.exportVariable('ACTIONS_CACHE_URL', process.env['ACTIONS_CACHE_URL'])
-            core.exportVariable('ACTIONS_CACHE_SERVICE_V2', process.env['ACTIONS_CACHE_SERVICE_V2'])
-            core.exportVariable('ACTIONS_RESULTS_URL', process.env['ACTIONS_RESULTS_URL'])
-            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env['ACTIONS_RUNTIME_TOKEN'])
+          result-encoding: string
+          script: return process.env['ACTIONS_CACHE_URL']
+      - name: Expose cache service
+        id: cache-service-v2
+        uses: actions/github-script@v9
+        with:
+          result-encoding: string
+          script: return process.env['ACTIONS_CACHE_SERVICE_V2']
+      - name: Expose result url
+        id: result-url
+        uses: actions/github-script@v9
+        with:
+          result-encoding: string
+          script: return process.env['ACTIONS_RESULTS_URL']
+      - name: Expose runtime token
+        id: runtime-token
+        uses: actions/github-script@v9
+        with:
+          result-encoding: string
+          script: return process.env['ACTIONS_RUNTIME_TOKEN']
 
       - name: Test image
-        run: |
-          docker build \
-          --build-arg GITHUB_SERVER_URL="$GITHUB_SERVER_URL" \
-          --build-arg ACTIONS_CACHE_URL="$ACTIONS_CACHE_URL" \
-          --build-arg ACTIONS_CACHE_SERVICE_V2="$ACTIONS_CACHE_SERVICE_V2" \
-          --build-arg ACTIONS_RESULTS_URL="$ACTIONS_RESULTS_URL" \
-          --build-arg ACTIONS_RUNTIME_TOKEN="$ACTIONS_RUNTIME_TOKEN" \
-          __tests__/image
+        uses: docker/build-push-action@v7
+        with:
+          context: __tests__/image
+          build-args: |
+            GITHUB_SERVER_URL=github.com
+            ACTIONS_CACHE_URL=${{ steps.cache-url.outputs.result }}
+            ACTIONS_CACHE_SERVICE_V2=${{ steps.cache-service-v2.outputs.result }}
+            ACTIONS_RESULTS_URL=${{ steps.result-url.outputs.result }}
+            ACTIONS_RUNTIME_TOKEN=${{ steps.runtime-token.outputs.result }}
