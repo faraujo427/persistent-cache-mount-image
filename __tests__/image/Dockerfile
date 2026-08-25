@@ -9,6 +9,8 @@ ENV ACTIONS_CACHE_SERVICE_V2=$ACTIONS_CACHE_SERVICE_V2
 ARG ACTIONS_RESULTS_URL
 ENV ACTIONS_RESULTS_URL=$ACTIONS_RESULTS_URL
 
+RUN printenv
+
 RUN node /index.js extract --key test-key --paths /node_modules
 
 RUN node /index.js inject --key test-key --paths /node_modules --lookup-only
