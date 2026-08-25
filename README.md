@@ -25,3 +25,7 @@ These are available in an action environment, but are absent if you use inside `
 ```
 core.exportVariable('ACTIONS_CACHE_URL', process.env['ACTIONS_CACHE_URL'])
 ```
+ 
+ **Important!**
+
+The `action/cache` library will print logs to stdout and some may have sensitive information. Filter or disable the build logs entirely.
