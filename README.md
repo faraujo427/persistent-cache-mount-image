@@ -11,4 +11,17 @@ parameters:
 
 required environment variables:
 
-- 
+- GITHUB_SERVER_URL
+- ACTIONS_CACHE_URL
+- ACTIONS_RESULTS_URL
+- ACTIONS_RUNTIME_TOKEN
+
+optional environment variables:
+
+- ACTIONS_CACHE_SERVICE_V2
+
+These are available in an action environment, but are absent if you use inside `run` in a step. They can be exported using `actions/github-script`
+
+```
+core.exportVariable('ACTIONS_CACHE_URL', process.env['ACTIONS_CACHE_URL'])
+```

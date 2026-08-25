@@ -2,6 +2,7 @@ import { parseOpts, validateOpts } from "./opts.js";
 import { injectCache } from "./inject.js";
 import { exit } from "node:process";
 import { extractCache } from "./extract.js";
+import { checkEnvironment } from "./utils/environment.js";
 
 async function main(args: string[]) {
   try {
@@ -22,7 +23,7 @@ async function main(args: string[]) {
       throw new Error(errMessage);
     }
 
-    opts["lookup-only"] = true;
+    checkEnvironment();
 
     if (operation == "inject") {
       const cacheKey = await injectCache(opts);
