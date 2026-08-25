@@ -4,6 +4,8 @@ import { exit } from "node:process";
 import { extractCache } from "./extract.js";
 import { checkEnvironment } from "./utils/environment.js";
 
+import * as core from "@actions/core";
+
 async function main(args: string[]) {
   try {
     if (args.length < 3) {
@@ -28,22 +30,22 @@ async function main(args: string[]) {
     if (operation == "inject") {
       const cacheKey = await injectCache(opts);
       if (!cacheKey) {
-        console.info("Cache not found for input key '%s'", opts.key);
+        core.info(`Cache not found for input key '${opts.key}'`);
         return;
       }
       if (opts["lookup-only"]) {
-        console.log(`Cache found and can be restored from key: ${cacheKey}`);
+        core.info(`Cache found and can be restored from key: ${cacheKey}`);
       } else {
-        console.log(`Cache restored from key: ${cacheKey}`);
+        core.info(`Cache restored from key: ${cacheKey}`);
       }
     } else if (operation == "extract") {
       const cacheId = await extractCache(opts);
       if (cacheId != -1) {
-        console.log(`Cache saved with key: ${opts.key}`);
+        core.info(`Cache saved with key: ${opts.key}`);
       }
     }
   } catch (error: unknown) {
-    console.error("An error ocurred: %s", (error as Error).message);
+    core.error(error as Error);
     exit(1);
   }
 }
