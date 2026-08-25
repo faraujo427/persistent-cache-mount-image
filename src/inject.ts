@@ -3,7 +3,7 @@ import { isCacheFeatureAvailable } from "./utils/actionCacheUtils";
 
 import * as cache from "@actions/cache";
 
-export async function injectCache(opts: Opts) {
+export async function injectCache(opts: Opts): Promise<string | undefined> {
   if (!isCacheFeatureAvailable()) {
     return;
   }
