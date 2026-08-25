@@ -16,3 +16,5 @@ RUN printenv
 RUN node /index.js extract --key test-key --paths /node_modules
 
 RUN node /index.js inject --key test-key --paths /node_modules --lookup-only
+
+RUN node /index.js inject --key test-wrong-key --paths /node_modules --prefix-keys test- --lookup-only
