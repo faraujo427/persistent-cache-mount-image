@@ -1,6 +1,7 @@
 import { parseOpts, validateOpts } from "./opts.js";
 import { injectCache } from "./inject.js";
 import { exit } from "node:process";
+import { extractCache } from "./extract.js";
 
 async function main(args: string[]) {
   try {
@@ -33,6 +34,11 @@ async function main(args: string[]) {
         console.log(`Cache found and can be restored from key: ${cacheKey}`);
       } else {
         console.log(`Cache restored from key: ${cacheKey}`);
+      }
+    } else if (operation == "extract") {
+      const cacheId = await extractCache(opts);
+      if (cacheId != -1) {
+        console.log(`Cache saved with key: ${opts.key}`);
       }
     }
   } catch (error: unknown) {
