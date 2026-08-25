@@ -54,3 +54,7 @@ jobs:
           subject-name: ${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
+      
+      - name: Test image
+        run: |
+          docker build __tests__/image
