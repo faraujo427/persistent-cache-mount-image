@@ -57,4 +57,9 @@ jobs:
       
       - name: Test image
         run: |
-          docker build __tests__/image
+          docker build \
+          --build-arg GITHUB_SERVER_URL="$GITHUB_SERVER_URL" \
+          --build-arg ACTIONS_CACHE_URL="$ACTIONS_CACHE_URL" \
+          --build-arg ACTIONS_CACHE_SERVICE_V2="$ACTIONS_CACHE_SERVICE_V2" \
+          --build-arg ACTIONS_RESULTS_URL="$ACTIONS_RESULTS_URL" \
+          __tests__/image

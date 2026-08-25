@@ -1,5 +1,14 @@
 FROM ghcr.io/faraujo427/persistent-cache-mount:main
 
+ARG GITHUB_SERVER_URL
+ENV GITHUB_SERVER_URL=$GITHUB_SERVER_URL
+ARG ACTIONS_CACHE_URL
+ENV ACTIONS_CACHE_URL=$ACTIONS_CACHE_URL
+ARG ACTIONS_CACHE_SERVICE_V2
+ENV ACTIONS_CACHE_SERVICE_V2=$ACTIONS_CACHE_SERVICE_V2
+ARG ACTIONS_RESULTS_URL
+ENV ACTIONS_RESULTS_URL=$ACTIONS_RESULTS_URL
+
 RUN node /index.js extract --key test-key --paths /node_modules
 
 RUN node /index.js inject --key test-key --paths /node_modules --lookup-only
