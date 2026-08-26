@@ -74,3 +74,13 @@ jobs:
           --secret id=ACTIONS_RUNTIME_TOKEN,env=ACTIONS_RUNTIME_TOKEN \
           __tests__/image \
           2>&1 | sed -nE '/#[[:digit:]]+ [[:digit:]]+\.[[:digit:]]+ /{s/#[[:digit:]]+ [[:digit:]]+\.[[:digit:]]+ //;p}'
+      
+      - name: Clean image test
+        uses: actions/github-script@v9
+        with:
+          script: |
+            octokit.rest.actions.deleteActionsCacheByKey({
+              ${{ github.repository_owner }},
+              persistent-cache-mount-image,
+              test-key,
+            });
