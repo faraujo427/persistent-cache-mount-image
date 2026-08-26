@@ -83,4 +83,5 @@ jobs:
               "owner": "${{ github.repository_owner }}",
               "repo": "persistent-cache-mount-image",
               "key": "test-key",
+              "ref": "${{ github.ref }}"
             });
