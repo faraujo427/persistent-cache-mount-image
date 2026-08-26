@@ -23,6 +23,6 @@ describe("validateOpts", () => {
 });
 
 test("stringToArray should split '\n' separated strings", () => {
-    const s = "a\nb";
+    const s = "a,b";
     expect(stringToArray(s)).toStrictEqual(["a", "b"]);
 });

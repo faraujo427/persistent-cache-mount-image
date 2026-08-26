@@ -30,7 +30,7 @@ export function validateOpts(opts: Opts): string | null {
 export function stringToArray(s: string): string[] {
   if (s != "") {
     return s
-      .split("\n")
+      .split(",")
       .map((s) => s.replace(/^!\s+/, "!").trim())
       .filter((x) => x !== "");
   }
