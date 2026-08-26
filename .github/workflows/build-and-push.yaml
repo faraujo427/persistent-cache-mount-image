@@ -80,7 +80,7 @@ jobs:
         with:
           script: |
             octokit.rest.actions.deleteActionsCacheByKey({
-              "${{ github.repository_owner }}",
-              "persistent-cache-mount-image",
-              "test-key",
+              "owner": "${{ github.repository_owner }}",
+              "repo": "persistent-cache-mount-image",
+              "key": "test-key",
             });
