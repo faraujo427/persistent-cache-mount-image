@@ -10,6 +10,8 @@ env:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    env:
+      CACHE_KEY: test-key
     permissions:
       actions: write
       contents: read
@@ -61,6 +63,7 @@ jobs:
       - name: Test image
         run: |
           docker build \
+          --build-arg CACHE_KEY=${{ env.CACHE_KEY }}
           --secret id=GITHUB_SERVER_URL,env=GITHUB_SERVER_URL \
           --secret id=ACTIONS_CACHE_URL,env=ACTIONS_CACHE_URL \
           --secret id=ACTIONS_CACHE_SERVICE_V2,env=ACTIONS_CACHE_SERVICE_V2 \
@@ -76,7 +79,7 @@ jobs:
             octokit.rest.actions.deleteActionsCacheByKey({
               "owner": "${{ github.repository_owner }}",
               "repo": "persistent-cache-mount-image",
-              "key": "test-key",
+              "key": "${{ env.CACHE_KEY }}",
             });
 
       - name: Push the image

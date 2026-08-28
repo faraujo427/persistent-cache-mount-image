@@ -26,4 +26,4 @@ RUN --mount=type=secret,id=GITHUB_SERVER_URL,env=GITHUB_SERVER_URL \
     --mount=type=secret,id=ACTIONS_RESULTS_URL,env=ACTIONS_RESULTS_URL \
     --mount=type=secret,id=ACTIONS_RUNTIME_TOKEN,env=ACTIONS_RUNTIME_TOKEN \
     echo Test injection with prefix key \
-    && node /index.js inject --key test-wrong-key --paths /node_modules --prefix-keys test- --lookup-only
+    && node /index.js inject --key test-wrong-key --paths /node_modules --prefix-keys ${CACHE_KEY}- --lookup-only
