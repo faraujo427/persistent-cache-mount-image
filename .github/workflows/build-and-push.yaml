@@ -63,7 +63,7 @@ jobs:
       - name: Test image
         run: |
           docker build \
-          --build-arg CACHE_KEY=${{ env.CACHE_KEY }}
+          --build-arg CACHE_KEY=${{ env.CACHE_KEY }} \
           --secret id=GITHUB_SERVER_URL,env=GITHUB_SERVER_URL \
           --secret id=ACTIONS_CACHE_URL,env=ACTIONS_CACHE_URL \
           --secret id=ACTIONS_CACHE_SERVICE_V2,env=ACTIONS_CACHE_SERVICE_V2 \
