@@ -62,6 +62,7 @@ jobs:
 
       - name: Test image
         run: |
+          set -eou pipefail
           docker build \
           --build-arg CACHE_KEY=${{ env.CACHE_KEY }} \
           --secret id=GITHUB_SERVER_URL,env=GITHUB_SERVER_URL \
