@@ -1,4 +1,8 @@
+# syntax=docker/dockerfile:1
+# check=skip=SecretsUsedInArgOrEnv
 FROM ghcr.io/faraujo427/persistent-cache-mount:main
+
+ARG CACHE_KEY=test-key
 
 RUN --mount=type=secret,id=GITHUB_SERVER_URL,env=GITHUB_SERVER_URL \
     --mount=type=secret,id=ACTIONS_CACHE_URL,env=ACTIONS_CACHE_URL \
@@ -6,7 +10,7 @@ RUN --mount=type=secret,id=GITHUB_SERVER_URL,env=GITHUB_SERVER_URL \
     --mount=type=secret,id=ACTIONS_RESULTS_URL,env=ACTIONS_RESULTS_URL \
     --mount=type=secret,id=ACTIONS_RUNTIME_TOKEN,env=ACTIONS_RUNTIME_TOKEN \
     echo Test extraction \
-    && node /index.js extract --key test-key --paths /node_modules
+    && node /index.js extract --key ${CACHE_KEY} --paths /node_modules
 
 RUN --mount=type=secret,id=GITHUB_SERVER_URL,env=GITHUB_SERVER_URL \
     --mount=type=secret,id=ACTIONS_CACHE_URL,env=ACTIONS_CACHE_URL \
@@ -14,7 +18,7 @@ RUN --mount=type=secret,id=GITHUB_SERVER_URL,env=GITHUB_SERVER_URL \
     --mount=type=secret,id=ACTIONS_RESULTS_URL,env=ACTIONS_RESULTS_URL \
     --mount=type=secret,id=ACTIONS_RUNTIME_TOKEN,env=ACTIONS_RUNTIME_TOKEN \
     echo Test injection with key \
-    && node /index.js inject --key test-key --paths /node_modules --lookup-only
+    && node /index.js inject --key ${CACHE_KEY} --paths /node_modules --lookup-only
 
 RUN --mount=type=secret,id=GITHUB_SERVER_URL,env=GITHUB_SERVER_URL \
     --mount=type=secret,id=ACTIONS_CACHE_URL,env=ACTIONS_CACHE_URL \

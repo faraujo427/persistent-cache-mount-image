@@ -37,24 +37,17 @@ jobs:
         with:
           images: ${{ env.IMAGE_NAME }}
 
-      - name: Build and push
-        id: push
+      - name: Build the image
+        id: build
         uses: docker/build-push-action@v7
         with:
           builder: ${{ steps.setup-buildx.outputs.name }}
           context: .
-          push: true
+          push: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
           cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
-
-      - name: Generate image attestation
-        uses: actions/attest@v4
-        with:
-          subject-name: ${{ env.IMAGE_NAME }}
-          subject-digest: ${{ steps.push.outputs.digest }}
-          push-to-registry: true
 
       - name: Expose variables
         uses: actions/github-script@v9
@@ -75,7 +68,7 @@ jobs:
           --secret id=ACTIONS_RUNTIME_TOKEN,env=ACTIONS_RUNTIME_TOKEN \
           __tests__/image \
           2>&1 | sed -nE '/#[[:digit:]]+ [[:digit:]]+\.[[:digit:]]+ /{s/#[[:digit:]]+ [[:digit:]]+\.[[:digit:]]+ //;p}'
-      
+
       - name: Clean image test
         uses: actions/github-script@v9
         with:
@@ -85,3 +78,18 @@ jobs:
               "repo": "persistent-cache-mount-image",
               "key": "test-key",
             });
+
+      - name: Push the image
+        id: push
+        uses: docker/build-push-action@v7
+        with:
+          builder: ${{ steps.setup-buildx.outputs.name }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+
+      - name: Generate image attestation
+        uses: actions/attest@v4
+        with:
+          subject-name: ${{ env.IMAGE_NAME }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true
