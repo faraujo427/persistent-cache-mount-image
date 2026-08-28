@@ -1,19 +1,19 @@
-import { Opts, stringToArray } from "./opts";
-import { isCacheFeatureAvailable } from "./utils/actionCacheUtils";
+import { Opts, stringToArray } from './opts'
+import { isCacheFeatureAvailable } from './utils/actionCacheUtils'
 
-import * as cache from "@actions/cache";
+import * as cache from '@actions/cache'
 
 export async function extractCache(opts: Opts): Promise<number | undefined> {
-    if (!isCacheFeatureAvailable()) {
-        return;
-    }
+  if (!isCacheFeatureAvailable()) {
+    return
+  }
 
-    const paths = stringToArray(opts.paths);
+  const paths = stringToArray(opts.paths)
 
-    return cache.saveCache(
-        paths,
-        opts.key,
-        {},
-        false,
-    );
+  return cache.saveCache(
+    paths,
+    opts.key,
+    { uploadChunkSize: opts['chunk-size'] },
+    opts['enable-cross-os-archive']
+  )
 }

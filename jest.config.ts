@@ -8,7 +8,7 @@ const presetConfig = createDefaultEsmPreset({
 
 const jestConfig: JestConfigWithTsJest = {
   ...presetConfig,
-  resolver: 'ts-jest-resolver'
+  resolver: 'ts-jest-resolver',
 }
 
 export default jestConfig
