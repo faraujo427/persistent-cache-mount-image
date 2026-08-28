@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 RUN npm install
-COPY __fixtures__/ ./__fixtures__
-COPY __tests__/ ./__tests__
+COPY __fixtures__ ./__fixtures__
+COPY __tests__ ./__tests__
 COPY src ./src
 COPY .prettierrc.yml eslint.config.js jest.config.ts tsconfig.json ./
 

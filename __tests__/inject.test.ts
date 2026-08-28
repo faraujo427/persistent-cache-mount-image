@@ -82,7 +82,7 @@ test('injectCache should receive lookup-only value', async () => {
 })
 
 test('injectCache should receive enable-cross-os-archive value', async () => {
-    const opts = createOpts()
+  const opts = createOpts()
   opts['enable-cross-os-archive'] = true
   ;(cache.isFeatureAvailable as jest.Mock).mockReturnValue(true)
 

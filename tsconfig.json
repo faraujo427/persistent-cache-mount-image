@@ -9,18 +9,10 @@
     "moduleResolution": "bundler",
     "strict": true,
     "strictNullChecks": true,
-    "types": [
-      "node",
-      "jest"
-    ],
+    "types": ["node", "jest"],
     "outDir": "lib",
     "rootDir": "src"
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "__tests__",
-    "dist",
-  ],
+  "include": ["src"],
+  "exclude": ["__tests__", "dist"]
 }
